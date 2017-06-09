@@ -25,7 +25,6 @@ module.exports = function (RED) {
             hyperion.on('connect', function () {
                 hyperion.getServerinfo(function (err, result) {
                     node.effects = result.info.effects;
-                    console.log(JSON.stringify(node.effects));
 
                     if (result.info.activeLedColor.length > 0) {
                         node.color = result.info.activeLedColor[0]["RGB Value"];
