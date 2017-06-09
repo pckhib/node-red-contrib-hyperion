@@ -1,0 +1,27 @@
+{
+  "name": "node-red-contrib-hyperion",
+  "version": "0.1.0",
+  "description": "Hyperion node for node-red",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pckhib/node-red-contrib-hyperion.git"
+  },
+  "node-red": {
+    "nodes": {
+      "hyperion": "hyperion.js"
+    }
+  },
+  "keywords": [
+    "node-red",
+    "hyperion"
+  ],
+  "author": "Patrick Hieber <me@patrickhieber.de>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pckhib/node-red-contrib-hyperion/issues"
+  },
+  "homepage": "https://github.com/pckhib/node-red-contrib-hyperion#readme",
+  "dependencies": {
+    "hyperion-client": "^1.0.3"
+  }
+}

@@ -1,0 +1,63 @@
+<script type="text/javascript">
+    RED.nodes.registerType('Hyperion-Server-Conf', {
+        category: 'config',
+        defaults: {
+            ip: { value: '', required: true },
+            port: { value: 19444, required: true },
+            name: { value: '' }
+        },
+        label: function () {
+            return this.name || 'Hyperion Server';
+        }
+    });
+</script>
+<script type="text/x-red" data-template-name="Hyperion-Server-Conf">
+    <div class="form-row">
+        <label for="node-config-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-config-input-name">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-ip"><i class="fa fa-globe"></i> IP-Address</label>
+        <input type="text" id="node-config-input-ip">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-port"><i class="fa fa-globe"></i> Port</label>
+        <input type="text" id="node-config-input-port">
+    </div>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('Hyperion', {
+        category: 'output',
+        color: '#8cdb8d',
+        defaults: {
+            server: { value: '', type: 'Hyperion-Server-Conf' }
+        },
+        inputs: 1,
+        outputs: 0,
+        icon: 'light.png',
+        label: function () {
+            return 'Hyperion';
+        }
+    });
+</script>
+<script type="text/x-red" data-template-name="Hyperion">
+    <div class="form-row">
+        <label for="node-config-input-server"><i class="fa fa-globe"></i> Server</label>
+        <input type="text" id="node-input-server">
+    </div>
+</script>
+<script type="text/x-red" data-help-name="Hyperion">
+    <p>A simple node that let's you control a Hyperion server</p>
+    <p>
+        Example:
+<pre>
+{
+  "color": [255, 100, 0],
+  "bri": 80,
+  "effect": "Knight rider",
+  "clear": true
+}
+</pre>
+    </p>
+</script>
