@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-hyperion",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Hyperion node for node-red",
   "repository": {
     "type": "git",
