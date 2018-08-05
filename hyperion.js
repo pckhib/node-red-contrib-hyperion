@@ -53,7 +53,7 @@ module.exports = function (RED) {
 
                     // set effect; String - name of effect
                     if ('effect' in msg.payload) {
-                        hyperion.setEffect(msg.payload.value, msg.payload.args, function (err, result) {
+                        hyperion.setEffect(msg.payload.effect, msg.payload.args, function (err, result) {
                         });
                     }
 
