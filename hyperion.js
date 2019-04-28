@@ -61,6 +61,10 @@ module.exports = function (RED) {
                         hyperion.clear(function (err, result) {
                         });
                     }
+                    if ('clearall' in msg.payload && msg.payload.clearall) {
+                        hyperion.clearall(function (err, result) {
+                        });
+                    }
 
                 });
             });
