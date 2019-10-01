@@ -58,6 +58,14 @@ module.exports = function (RED) {
                         });
                     }
 
+                    if ('state' in msg.payload) {
+                        if (msg.payload.state == 'on') {
+                            setColor(node.color);
+                        } else if (msg.payload.state == 'off') {
+                            setColor([0, 0, 0]);
+                        }
+                    }
+
                     if ('clear' in msg.payload && msg.payload.clear) {
                         hyperion.clear(function (err, result) {
                         });
@@ -81,7 +89,9 @@ module.exports = function (RED) {
                 color[1] = Math.max(color[1], 0);
                 color[2] = Math.max(color[2], 0);
 
-                node.color = color;
+                if (color[0] != 0 || color[1] != 0 || color[2] != 0) {
+                    node.color = color;
+                }
 
                 hyperion.setColor(color, function (err, result) {
                 });
