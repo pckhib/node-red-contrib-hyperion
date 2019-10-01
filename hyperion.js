@@ -13,10 +13,11 @@ module.exports = function (RED) {
         RED.nodes.createNode(this, config);
         var node = this;
 
-        node.color = [0, 0, 0];
-        node.effects = [];
-
         var Hyperion = require('hyperion-client');
+        var Color = require('color');
+
+        node.color = Color.rgb([0, 0, 0]);
+        node.effects = [];
 
         this.server = RED.nodes.getNode(config.server);
 
@@ -28,28 +29,47 @@ module.exports = function (RED) {
                     node.effects = result.info.effects;
 
                     if (result.info.activeLedColor.length > 0) {
-                        node.color = result.info.activeLedColor[0]["RGB Value"];
+                        node.color = Color.rgb(result.info.activeLedColor[0]["RGB Value"]);
                     } else {
-                        node.color = [0, 0, 0];
+                        node.color = Color.rgb([0, 0, 0]);
                     }
 
                     // set color [r, g, b]; 0 - 255
                     if ('color' in msg.payload) {
                         if (Array.isArray(msg.payload.color) && msg.payload.color.length === 3) {
-                            setColor(msg.payload.color);
+                            setColor(Color.rgb(msg.payload.color));
                         }
                     }
 
                     // set brightness; 0 - 255
                     if ('bri' in msg.payload) {
-                        var v = Math.max(node.color[0], node.color[1], node.color[2]) / 255 * 100;
+                        var currentColor = node.color.rgb().array();
+                        var v = Math.max(currentColor[0], currentColor[1], currentColor[2]) / 255 * 100;
 
                         var color = [];
-                        color[0] = Math.round(node.color[0] / v * msg.payload.bri);
-                        color[1] = Math.round(node.color[1] / v * msg.payload.bri);
-                        color[2] = Math.round(node.color[2] / v * msg.payload.bri);
+                        color[0] = Math.round(currentColor[0] / v * msg.payload.bri);
+                        color[1] = Math.round(currentColor[1] / v * msg.payload.bri);
+                        color[2] = Math.round(currentColor[2] / v * msg.payload.bri);
 
-                        setColor(color);
+                        setColor(Color.rgb(color));
+                    }
+
+                    // set hue; 0 - 360
+                    if ('hue' in msg.payload) {
+                        node.color.hue(msg.payload.hue);
+                        setColor(node.color);
+                    }
+
+                    // set saturation (hsl); 0% - 100%
+                    if ('saturation' in msg.payload) {
+                        node.color.saturationl(msg.payload.saturation);
+                        setColor(node.color);
+                    }
+
+                    // set lightness; 0% - 100%
+                    if ('lightness' in msg.payload) {
+                        node.color.lightness(msg.payload.lightness);
+                        setColor(node.color);
                     }
 
                     // set effect; String - name of effect
@@ -62,7 +82,7 @@ module.exports = function (RED) {
                         if (msg.payload.state == 'on') {
                             setColor(node.color);
                         } else if (msg.payload.state == 'off') {
-                            setColor([0, 0, 0]);
+                            setColor(Color.rgb([0, 0, 0]));
                         }
                     }
 
@@ -81,19 +101,11 @@ module.exports = function (RED) {
             });
 
             function setColor(color) {
-                color[0] = Math.min(color[0], 255);
-                color[1] = Math.min(color[1], 255);
-                color[2] = Math.min(color[2], 255);
-
-                color[0] = Math.max(color[0], 0);
-                color[1] = Math.max(color[1], 0);
-                color[2] = Math.max(color[2], 0);
-
-                if (color[0] != 0 || color[1] != 0 || color[2] != 0) {
+                if (color.red() != 0 || color.green() != 0 || color.blue() != 0) {
                     node.color = color;
                 }
 
-                hyperion.setColor(color, function (err, result) {
+                hyperion.setColor(color.rgb().array(), function (err, result) {
                 });
             }
         });
