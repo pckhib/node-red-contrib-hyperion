@@ -4,6 +4,7 @@ module.exports = function (RED) {
 
         this.ip = config.ip;
         this.port = config.port;
+        this.priority = config.priority;
         this.name = config.name;
     }
     RED.nodes.registerType('Hyperion-Server-Conf', HyperionServerConfNode);
@@ -21,7 +22,7 @@ module.exports = function (RED) {
 
         node.on('input', function (msg) {
 
-            var hyperion = new Hyperion(this.server.ip, this.server.port);
+            var hyperion = new Hyperion(this.server.ip, this.server.port, this.server.priority);
             hyperion.on('connect', function () {
                 hyperion.getServerinfo(function (err, result) {
                     node.effects = result.info.effects;
